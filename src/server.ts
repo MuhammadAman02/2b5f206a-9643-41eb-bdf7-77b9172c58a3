@@ -1,16 +1,15 @@
-import Fastify from 'fastify';
 import app from './app';
+import { env } from './config/env';
 
 const start = async () => {
-  const server = Fastify({ logger: true });
-
   try {
-    await server.register(app);
-
-    await server.listen({ port: 3000, host: '0.0.0.0' }); // important for K8s
-    console.log('Server listening on http://0.0.0.0:3000');
+    await app.listen({ port: env.PORT, host: '0.0.0.0' });
+    console.log(`🚀 Server running on http://localhost:${env.PORT}`);
+    console.log(`📋 API endpoints:`);
+    console.log(`   GET /api/fruits - Get fruit names`);
+    console.log(`   GET /api/health - Health check`);
   } catch (err) {
-    server.log.error(err);
+    console.error('Error starting server:', err);
     process.exit(1);
   }
 };
